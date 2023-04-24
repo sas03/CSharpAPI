@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NEXGEN Karte API</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NEXGEN Karte API</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <div id="map"></div>
+
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - NEXGEN Karte API - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        let map;
+
+        function initMap() {
+            let options = {
+                center: { lat: 50.9795715, lng: 10.3146872 },
+                zoom: 6
+            }
+            map = new google.maps.Map(document.getElementById("map"), options);
+
+            google.maps.event.addListener(map, "click", (event) => {
+                addMarker({ location: event.latLng })
+            })
+
+            let MarkerArray = [
+                {
+                    location: { lat: 4.0779000, lng: 9.6759000 },
+                    imageIcon: { url: "https://img.icons8.com/fluency/344/marker-a.png", scaledSize: new google.maps.Size(70, 70) },
+                    content: `<h2>Bonabéri City</h2>`
+                },
+
+                {
+                    location: { lat: 4.1779000, lng: 9.7759000 },
+                    imageIcon: { url: "https://img.icons8.com/clouds/344/marker-storm.png", scaledSize: new google.maps.Size(70, 70) }
+                },
+
+                {
+                    location: { lat: 3.9779000, lng: 9.6759000 },
+                    imageIcon: { url: "https://img.icons8.com/external-kiranshastry-lineal-color-kiranshastry/344/external-marker-interface-kiranshastry-lineal-color-kiranshastry.png", scaledSize: new google.maps.Size(70, 70) },
+                    content: `<h2>Random City</h2>`
+                }
+            ]
+
+            for (let i = 0; i < MarkerArray.length; i++) {
+                addMarker(MarkerArray[i])
+            }
+
+            function addMarker(property) {
+                const marker = new google.maps.Marker({
+                    position: property.location,
+                    map: map,
+                })
+
+                if (property.imageIcon) {
+                    marker.setIcon(property.imageIcon)
+                }
+
+                if (property.content) {
+                    const detailWindow = new google.maps.InfoWindow({
+                        content: property.content
+                    })
+                    marker.addListener("mouseover", () => {
+                        detailWindow.open(map, marker);
+                    })
+                }
+            }
+        }
+
+        
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfrJMHGJnkf4xHRJqbHnCfhaLCJtJ3oBI&callback=initMap&v=weekly"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

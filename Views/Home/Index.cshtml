@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "NEXGEN Karte API";
+}
+
+<!--Model declaration for the array of objects WeclappAuftrag-->
+@model WeclappAuftrag[]
+
+<div class="text-center">
+    <h1 class="display-4">Kartenübersicht</h1>
+    <form action="" class="mx-5">
+        <div class="form-group">
+            <label for="kundenfilter">Kundenfilter:</label>
+            <select name="kundenfilter" class="form-control" id="kundenfilter">
+                <option value="alle">Alle</option>
+                <option value="EFS">EFS</option>
+                <option value="EHN">EHN</option>
+                <option value="EMH">EMH</option>
+                <option value="ERG">ERG</option>
+                <option value="ESB">ESB</option>
+                <option value="ESW">ESW</option>
+                <option value="GDC">GDC</option>
+                <option value="GLH">GLH</option>
+                <option value="LDL">LDL</option>
+                <option value="REWE">REWE</option>
+                <option value="TGT">TGT</option>
+                <option value="TVG">TVG</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="kunde">Kunde:</label>
+            <input type="text" class="form-control" name="kunde" id="kunde" placeholder="Kunde..." />
+        </div>
+
+        <div class="form-group">
+            <label for="auftragsnummer">AuftragsNr.:</label>
+            <input type="text" class="form-control" name="auftragsnummer" id="auftragsnummer" placeholder="Auftragsnummer..." /><br />
+        </div>
+
+
+        <input type="submit" class="btn btn-primary" value="Suchen" />
+    </form>
+
+    @{
+        foreach (var d in Model)
+        {
+            <p>@d.createdDate</p>
+            <p>@d.netAmount</p>
+            <p>@d.deliveryAddress.city</p>
+        }
+
+        @DateTime.Now
+    }
+
+</div>
